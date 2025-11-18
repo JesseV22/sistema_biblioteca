@@ -1,0 +1,213 @@
+### LOGIN
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+  "UserName": "qwe",
+  "Password": "qwe"
+}
+
+### Salvar token
+@token = {{loginAutenticado.response.body.$.token}}
+### ------- AUTORES --------
+
+### Insert Autor
+POST http://localhost:40000/insertAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "autorid": 0,
+  "nome": "J. R. R. Tolkien",
+  "nacionalidade": "Reino Unido",
+  "removido": false
+}
+
+### GetAll Autores
+GET http://localhost:40000/getAllAutores HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get Autor by ID
+POST http://localhost:40000/getAutorByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "autorid": 1
+}
+
+### Update Autor
+POST http://localhost:40000/updateAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "autorid": 1,
+  "nome": "Tolkien Atualizado",
+  "nacionalidade": "Reino Unido",
+  "removido": false
+}
+
+### Delete Autor (soft delete)
+POST http://localhost:40000/DeleteAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "autorid": 1
+}
+
+### ------- LIVROS --------
+
+### Insert Livro
+POST http://localhost:40000/insertLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroid": 0,
+  "titulo": "O Senhor dos Anéis",
+  "categoria": "Fantasia",
+  "preco": 59.90,
+  "quantidade": 10,
+  "removido": false
+}
+
+### GetAll Livros
+GET http://localhost:40000/getAllLivros HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get Livro by ID
+POST http://localhost:40000/getLivroByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroid": 1
+}
+
+### Update Livro
+POST http://localhost:40000/updateLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroid": 1,
+  "titulo": "O Hobbit",
+  "categoria": "Fantasia",
+  "preco": 45.50,
+  "quantidade": 5,
+  "removido": false
+}
+
+### Delete Livro (soft delete)
+POST http://localhost:40000/DeleteLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroid": 1
+}
+
+### ------- LIVRO_AUTOR (N:M) --------
+
+### Insert Vínculo
+POST http://localhost:40000/insertLivroAutor HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroid": 1,
+  "autorid": 1,
+  "removido": false
+}
+
+### GetAll vínculos
+GET http://localhost:40000/getAllLivroAutor HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get vínculo by ID
+POST http://localhost:40000/getLivroAutorByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroautorid": 1
+}
+
+### Update vínculo
+POST http://localhost:40000/updateLivroAutor HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroautorid": 1,
+  "livroid": 1,
+  "autorid": 1,
+  "removido": false
+}
+
+### Delete vínculo
+POST http://localhost:40000/DeleteLivroAutor HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "livroautorid": 1
+}
+### ------- EMPRESTIMOS (1:N) --------
+
+### Insert Empréstimo
+POST http://localhost:40000/insertEmprestimos HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "emprestimoid": 0,
+  "livroid": 1,
+  "leitor": "João da Silva",
+  "data_emprestimo": "2025-11-25",
+  "data_prevista": "2025-12-05",
+  "data_devolucao": null,
+  "valor_multa": 0,
+  "removido": false
+}
+
+### GetAll
+GET http://localhost:40000/getAllEmprestimos HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get by ID
+POST http://localhost:40000/getEmprestimoByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "emprestimoid": 1
+}
+
+### Update
+POST http://localhost:40000/updateEmprestimos HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "emprestimoid": 1,
+  "livroid": 1,
+  "leitor": "João da Silva Alves",
+  "data_emprestimo": "2025-11-25",
+  "data_prevista": "2025-12-10",
+  "data_devolucao": "2025-12-05",
+  "valor_multa": 10.00,
+  "removido": false
+}
+
+### Delete
+POST http://localhost:40000/DeleteEmprestimos HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "emprestimoid": 1
+}

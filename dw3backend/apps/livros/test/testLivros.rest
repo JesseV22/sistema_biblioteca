@@ -1,0 +1,75 @@
+### Necessário para pegar o token ###
+### Login
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+  "UserName": "qwe",
+  "Password": "qwe"
+}
+
+### Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+
+### Insert Livro
+POST http://localhost:40000/insertLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "livroid": 0,
+  "titulo": "O Senhor dos Anéis",
+  "categoria": "Fantasia",
+  "preco": 59.90,
+  "quantidade": 10,
+  "removido": false
+}
+
+
+### GetAll Livros
+GET http://localhost:40000/getAllLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+
+}
+
+
+### Get Livro por ID
+POST http://localhost:40000/getLivroByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "livroid": 1
+}
+
+
+### Update Livro
+POST http://localhost:40000/updateLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "livroid": 1,
+  "titulo": "O Hobbit",
+  "categoria": "Fantasia",
+  "preco": 45.50,
+  "quantidade": 5,
+  "removido": false
+}
+
+
+### Delete Livro (soft delete)
+POST http://localhost:40000/DeleteLivros HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "livroid": 1
+}

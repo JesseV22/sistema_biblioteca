@@ -30,16 +30,16 @@ const insertAutores = (req, res) => {
 const updateAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
-    let { msg, linhasAfetadas } = await mdlAutores.UpdateAutores(autorREG);
+    let { msg, linhasAfetadas } = await mdlAutores.updateAutores(autorREG);
     res.json({ status: msg, linhasAfetadas });
   })();
 };
 
-// DELETE (soft)
-const DeleteAutores = (req, res) => {
+// DELETE
+const deleteAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
-    let { msg, linhasAfetadas } = await mdlAutores.DeleteAutores(autorREG);
+    let { msg, linhasAfetadas } = await mdlAutores.deleteAutores(autorREG);
     res.json({ status: msg, linhasAfetadas });
   })();
 };
@@ -49,5 +49,5 @@ module.exports = {
   getAutorByID,
   insertAutores,
   updateAutores,
-  DeleteAutores,
+  deleteAutores,
 };

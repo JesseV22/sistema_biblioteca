@@ -27,9 +27,7 @@ const insertAutores = async (autorREGPar) => {
   try {
     linhasAfetadas = (
       await db.query(
-        "INSERT INTO autores " +
-          "(nome, nacionalidade, removido) " +
-          "VALUES ($1, $2, $3)",
+        "INSERT INTO autores (nome, nacionalidade, removido) VALUES ($1, $2, $3)",
         [autorREGPar.nome, autorREGPar.nacionalidade, autorREGPar.removido]
       )
     ).rowCount;
@@ -42,18 +40,14 @@ const insertAutores = async (autorREGPar) => {
 };
 
 // Atualiza um autor
-const UpdateAutores = async (autorREGPar) => {
+const updateAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
   try {
     linhasAfetadas = (
       await db.query(
-        "UPDATE autores SET " +
-          "nome = $2, " +
-          "nacionalidade = $3, " +
-          "removido = $4 " +
-          "WHERE autorid = $1",
+        "UPDATE autores SET nome = $2, nacionalidade = $3, removido = $4 WHERE autorid = $1",
         [
           autorREGPar.autorid,
           autorREGPar.nome,
@@ -63,7 +57,7 @@ const UpdateAutores = async (autorREGPar) => {
       )
     ).rowCount;
   } catch (error) {
-    msg = "[mdlAutores|UpdateAutores] " + error.detail;
+    msg = "[mdlAutores|updateAutores] " + error.detail;
     linhasAfetadas = -1;
   }
 
@@ -71,7 +65,7 @@ const UpdateAutores = async (autorREGPar) => {
 };
 
 // Soft delete (removido = true)
-const DeleteAutores = async (autorREGPar) => {
+const deleteAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
@@ -83,7 +77,7 @@ const DeleteAutores = async (autorREGPar) => {
       )
     ).rowCount;
   } catch (error) {
-    msg = "[mdlAutores|DeleteAutores] " + error.detail;
+    msg = "[mdlAutores|deleteAutores] " + error.detail;
     linhasAfetadas = -1;
   }
 
@@ -94,6 +88,6 @@ module.exports = {
   getAllAutores,
   getAutorByID,
   insertAutores,
-  UpdateAutores,
-  DeleteAutores,
+  updateAutores,
+  deleteAutores,
 };
