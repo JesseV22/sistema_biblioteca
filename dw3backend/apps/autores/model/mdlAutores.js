@@ -1,6 +1,5 @@
 const db = require("../../../database/databaseconfig");
 
-// Retorna todos os autores não removidos
 const getAllAutores = async () => {
   return (
     await db.query(
@@ -9,7 +8,6 @@ const getAllAutores = async () => {
   ).rows;
 };
 
-// Retorna um autor pelo ID
 const getAutorByID = async (autorIDPar) => {
   return (
     await db.query(
@@ -19,7 +17,6 @@ const getAutorByID = async (autorIDPar) => {
   ).rows;
 };
 
-// Insere um novo autor
 const insertAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -27,9 +24,7 @@ const insertAutores = async (autorREGPar) => {
   try {
     linhasAfetadas = (
       await db.query(
-        "INSERT INTO autores " +
-          "(nome, nacionalidade, removido) " +
-          "VALUES ($1, $2, $3)",
+        "INSERT INTO autores (nome, nacionalidade, removido) VALUES ($1, $2, $3)",
         [autorREGPar.nome, autorREGPar.nacionalidade, autorREGPar.removido]
       )
     ).rowCount;
@@ -41,19 +36,14 @@ const insertAutores = async (autorREGPar) => {
   return { msg, linhasAfetadas };
 };
 
-// Atualiza um autor
-const UpdateAutores = async (autorREGPar) => {
+const updateAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
   try {
     linhasAfetadas = (
       await db.query(
-        "UPDATE autores SET " +
-          "nome = $2, " +
-          "nacionalidade = $3, " +
-          "removido = $4 " +
-          "WHERE autorid = $1",
+        "UPDATE autores SET nome = $2, nacionalidade = $3, removido = $4 WHERE autorid = $1",
         [
           autorREGPar.autorid,
           autorREGPar.nome,
@@ -63,15 +53,15 @@ const UpdateAutores = async (autorREGPar) => {
       )
     ).rowCount;
   } catch (error) {
-    msg = "[mdlAutores|UpdateAutores] " + error.detail;
+    msg = "[mdlAutores|updateAutores] " + error.detail;
     linhasAfetadas = -1;
   }
 
   return { msg, linhasAfetadas };
 };
 
-// Soft delete (removido = true)
-const DeleteAutores = async (autorREGPar) => {
+// Soft delete 
+const deleteAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
@@ -83,7 +73,7 @@ const DeleteAutores = async (autorREGPar) => {
       )
     ).rowCount;
   } catch (error) {
-    msg = "[mdlAutores|DeleteAutores] " + error.detail;
+    msg = "[mdlAutores|deleteAutores] " + error.detail;
     linhasAfetadas = -1;
   }
 
@@ -94,6 +84,6 @@ module.exports = {
   getAllAutores,
   getAutorByID,
   insertAutores,
-  UpdateAutores,
-  DeleteAutores,
+  updateAutores,
+  deleteAutores,
 };

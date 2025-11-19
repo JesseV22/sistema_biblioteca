@@ -35,8 +35,8 @@ const updateLivros = (req, res) => {
   })();
 };
 
-// DELETE (soft)
-const DeleteLivros = (req, res) => {
+// DELETE
+const deleteLivros = (req, res) => {
   (async () => {
     const livroREG = req.body;
     let { msg, linhasAfetadas } = await mdlLivros.DeleteLivros(livroREG);
@@ -49,5 +49,5 @@ module.exports = {
   getLivroByID,
   insertLivros,
   updateLivros,
-  DeleteLivros,
+  deleteLivros,
 };

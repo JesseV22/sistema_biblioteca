@@ -1,0 +1,72 @@
+### Necessário para pegar o token ###
+### Login
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+  "UserName": "qwe",
+  "Password": "qwe"
+}
+
+### Seta o token
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+
+
+### Insert Autor
+POST http://localhost:40000/insertAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "autorid": 0,
+  "nome": "J. R. R. Tolkien",
+  "nacionalidade": "Reino Unido",
+  "removido": false
+}
+
+
+### GetAll Autores
+GET http://localhost:40000/getAllAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+
+}
+
+
+### Get Autor por ID
+POST http://localhost:40000/getAutorByID HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "autorid": 1
+}
+
+
+### Update Autor
+POST http://localhost:40000/updateAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "autorid": 1,
+  "nome": "Tolkien Atualizado",
+  "nacionalidade": "Reino Unido",
+  "removido": false
+}
+
+
+### Delete Autor (soft delete)
+POST http://localhost:40000/DeleteAutores HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "autorid": 1
+}

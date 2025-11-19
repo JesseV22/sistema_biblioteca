@@ -1,0 +1,162 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block conteudoPagina %}
+<div class="row">
+  <div class="col-12">
+    <form id="formAutor">
+      <input type="hidden" id="autorid" value="{{ autorid }}">
+      <table class="table">
+        <tr>
+          <td>ID</td>
+          <td>
+            <input type="text" id="autoridView" class="form-control" disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>Nome</td>
+          <td>
+            <input type="text" id="nome" name="nome" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>Nacionalidade</td>
+          <td>
+            <input type="text" id="nacionalidade" name="nacionalidade" class="form-control">
+          </td>
+        </tr>
+      </table>
+
+      <button type="button" class="btn btn-success" onclick="atualizarAutor()">Salvar</button>
+      <button type="button" class="btn btn-danger" onclick="excluirAutor()">Excluir</button>
+      <a href="/Autores/ManutAutores" class="btn btn-secondary">Voltar</a>
+
+      <div id="msg" class="mt-3 text-danger"></div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scriptsPagina %}
+<script>
+  const backendUrl = "http://localhost:40000";
+
+  function obterAutorID() {
+    const hiddenId = document.getElementById("autorid").value;
+    if (hiddenId && hiddenId !== "0") {
+      return hiddenId;
+    }
+    const params = new URLSearchParams(window.location.search);
+    return params.get("autorid") || 0;
+  }
+
+  async function carregarAutor() {
+    const id = obterAutorID();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/Login";
+      return;
+    }
+
+    document.getElementById("autorid").value = id;
+
+    const resposta = await fetch(backendUrl + "/getAutorByID", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ autorid: parseInt(id) })
+    });
+
+    const dados = await resposta.json();
+
+    if (dados.status === "ok" && dados.registro && dados.registro.length > 0) {
+      const autor = dados.registro[0];
+      document.getElementById("autoridView").value = autor.autorid;
+      document.getElementById("nome").value = autor.nome;
+      document.getElementById("nacionalidade").value = autor.nacionalidade || "";
+    }
+  }
+
+  async function atualizarAutor() {
+    const id = document.getElementById("autorid").value;
+    const nome = document.getElementById("nome").value;
+    const nacionalidade = document.getElementById("nacionalidade").value;
+    const msg = document.getElementById("msg");
+
+    msg.innerText = "";
+
+    if (!nome) {
+      msg.innerText = "Informe o nome.";
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/Login";
+      return;
+    }
+
+    const resposta = await fetch(backendUrl + "/updateAutores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({
+        autorid: parseInt(id),
+        nome: nome,
+        nacionalidade: nacionalidade,
+        removido: false
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (dados.status === "ok") {
+      window.location.href = "/Autores/ManutAutores";
+    } else {
+      msg.innerText = dados.status || "Erro ao atualizar.";
+    }
+  }
+
+  async function excluirAutor() {
+    const id = document.getElementById("autorid").value;
+    const msg = document.getElementById("msg");
+
+    msg.innerText = "";
+
+    if (!id) {
+      msg.innerText = "ID inválido.";
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/Login";
+      return;
+    }
+
+    const resposta = await fetch(backendUrl + "/DeleteAutores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({
+        autorid: parseInt(id)
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (dados.status === "ok") {
+      window.location.href = "/Autores/ManutAutores";
+    } else {
+      msg.innerText = dados.status || "Erro ao excluir.";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", carregarAutor);
+</script>
+{% endblock %}

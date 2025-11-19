@@ -1,7 +1,7 @@
 
 const db = require("../../../database/databaseconfig");
 
-// Todos os vínculos livro-autor (N:M) não removidos
+
 const getAllLivroAutor = async () => {
   return (
     await db.query(
@@ -10,7 +10,7 @@ const getAllLivroAutor = async () => {
   ).rows;
 };
 
-// Busca vínculo por ID
+
 const getLivroAutorByID = async (livroAutorIDPar) => {
   return (
     await db.query(
@@ -20,7 +20,7 @@ const getLivroAutorByID = async (livroAutorIDPar) => {
   ).rows;
 };
 
-// Insere um vínculo livro-autor
+
 const insertLivroAutor = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -42,7 +42,7 @@ const insertLivroAutor = async (registroPar) => {
   return { msg, linhasAfetadas };
 };
 
-// Atualiza vínculo livro-autor
+
 const UpdateLivroAutor = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";

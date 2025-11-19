@@ -1,0 +1,76 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block conteudoPagina %}
+<div class="row">
+  <div class="col-12">
+    <form id="formAutor">
+      <table class="table">
+        <tr>
+          <td>Nome</td>
+          <td>
+            <input type="text" id="nome" name="nome" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>Nacionalidade</td>
+          <td>
+            <input type="text" id="nacionalidade" name="nacionalidade" class="form-control">
+          </td>
+        </tr>
+      </table>
+
+      <button type="button" class="btn btn-success" onclick="salvarAutor()">Salvar</button>
+      <a href="/Autores/ManutAutores" class="btn btn-secondary">Voltar</a>
+
+      <div id="msg" class="mt-3 text-danger"></div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scriptsPagina %}
+<script>
+  const backendUrl = "http://localhost:40000";
+
+  async function salvarAutor() {
+    const nome = document.getElementById("nome").value;
+    const nacionalidade = document.getElementById("nacionalidade").value;
+    const msg = document.getElementById("msg");
+
+    msg.innerText = "";
+
+    if (!nome) {
+      msg.innerText = "Informe o nome.";
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/Login";
+      return;
+    }
+
+    const resposta = await fetch(backendUrl + "/insertAutores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({
+        autorid: 0,
+        nome: nome,
+        nacionalidade: nacionalidade,
+        removido: false
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (dados.status === "ok") {
+      window.location.href = "/Autores/ManutAutores";
+    } else {
+      msg.innerText = dados.status || "Erro ao salvar.";
+    }
+  }
+</script>
+{% endblock %}

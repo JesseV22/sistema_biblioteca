@@ -1,6 +1,5 @@
 const db = require("../../../database/databaseconfig");
 
-// Todos os empréstimos não removidos
 const getAllEmprestimos = async () => {
   return (
     await db.query(
@@ -9,7 +8,7 @@ const getAllEmprestimos = async () => {
   ).rows;
 };
 
-// Empréstimo por ID
+
 const getEmprestimoByID = async (emprestimoIDPar) => {
   return (
     await db.query(
@@ -19,7 +18,7 @@ const getEmprestimoByID = async (emprestimoIDPar) => {
   ).rows;
 };
 
-// Inserir empréstimo
+
 const insertEmprestimos = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -49,7 +48,7 @@ const insertEmprestimos = async (registroPar) => {
   return { msg, linhasAfetadas };
 };
 
-// Atualizar empréstimo
+
 const UpdateEmprestimos = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";

@@ -4,15 +4,16 @@ const mdlLogin = require("../model/mdlLogin");
 
 const Login = (req, res) => {
   (async () => {
+
     const user = req.body;
 
-    const dados = await mdlLogin.GetCredencial(user);
+    const dados = await mdlLogin.GetCredencial({ UserName: user.UserName });
 
     if (dados.length === 0) {
       return res.status(403).json({ auth: false, message: "Usuário não encontrado" });
     }
 
-    const senhaOK = bcrypt.compareSync(user.password, dados[0].password);
+    const senhaOK = bcrypt.compareSync(user.Password, dados[0].password);
     if (!senhaOK) {
       return res.status(403).json({ auth: false, message: "Senha incorreta" });
     }
@@ -24,6 +25,7 @@ const Login = (req, res) => {
     );
 
     res.json({ auth: true, token });
+
   })();
 };
 

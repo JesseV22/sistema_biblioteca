@@ -1,6 +1,6 @@
 const mdlLivroAutor = require("../model/mdlLivroAutor");
 
-// GET ALL
+
 const getAllLivroAutor = (req, res) => {
   (async () => {
     let registro = await mdlLivroAutor.getAllLivroAutor();
@@ -8,7 +8,7 @@ const getAllLivroAutor = (req, res) => {
   })();
 };
 
-// GET BY ID
+
 const getLivroAutorByID = (req, res) => {
   (async () => {
     const id = parseInt(req.body.livroautorid);
@@ -17,7 +17,7 @@ const getLivroAutorByID = (req, res) => {
   })();
 };
 
-// INSERT
+
 const insertLivroAutor = (req, res) => {
   (async () => {
     const reg = req.body;
@@ -26,7 +26,7 @@ const insertLivroAutor = (req, res) => {
   })();
 };
 
-// UPDATE
+
 const updateLivroAutor = (req, res) => {
   (async () => {
     const reg = req.body;

@@ -1,0 +1,15 @@
+{% extends "templates/base.html" %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>{{ tituloPagina }}</h2>
+</div>
+
+<div>
+  {% block conteudoPagina %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% block scriptsPagina %}{% endblock %}
+{% endblock %}
