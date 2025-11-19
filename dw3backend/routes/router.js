@@ -4,12 +4,8 @@ const express = require("express");
 const routerApp = express.Router();
 
 const appLogin = require("../apps/login/controller/ctlLogin");
-const appLivros = require("../apps/livros/controller/ctlLivros");
-const appAutores = require("../apps/autores/controller/ctlAutores");
-const appLivroAutor = require("../apps/livroautor/controller/ctlLivroAutor");
-const appEmprestimos = require("../apps/emprestimos/controller/ctlEmprestimos");
 
-
+// Login / Logout
 routerApp.post("/Login", appLogin.Login);
 routerApp.post("/Logout", appLogin.Logout);
 

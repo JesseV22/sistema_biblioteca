@@ -7,17 +7,19 @@ const Login = (req, res) => {
 
     const user = req.body;
 
-    const dados = await mdlLogin.GetCredencial({ UserName: user.UserName });
+    const dados = await mdlLogin.GetCredencial(user);
 
+    // Se não achou o usuário
     if (dados.length === 0) {
       return res.status(403).json({ auth: false, message: "Usuário não encontrado" });
     }
 
-    const senhaOK = bcrypt.compareSync(user.Password, dados[0].password);
+    const senhaOK = bcrypt.compareSync(user.password, dados[0].password);
     if (!senhaOK) {
       return res.status(403).json({ auth: false, message: "Senha incorreta" });
     }
 
+    // Gera token
     const token = jwt.sign(
       { username: dados[0].username },
       process.env.SECRET_API,

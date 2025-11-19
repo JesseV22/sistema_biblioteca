@@ -31,7 +31,8 @@ const updateAutores = (req, res) => {
   })();
 };
 
-const deleteAutores = (req, res) => {
+// DELETE (soft)
+const DeleteAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
     let { msg, linhasAfetadas } = await mdlAutores.deleteAutores(autorREG);

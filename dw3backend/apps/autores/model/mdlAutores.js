@@ -36,7 +36,8 @@ const insertAutores = async (autorREGPar) => {
   return { msg, linhasAfetadas };
 };
 
-const updateAutores = async (autorREGPar) => {
+// Atualiza um autor
+const UpdateAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
@@ -60,8 +61,8 @@ const updateAutores = async (autorREGPar) => {
   return { msg, linhasAfetadas };
 };
 
-// Soft delete 
-const deleteAutores = async (autorREGPar) => {
+// Soft delete (removido = true)
+const DeleteAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
