@@ -1,12 +1,12 @@
 ### LOGIN
 # @name loginAutenticado
 POST http://localhost:40000/Login HTTP/1.1
-content-type: application/json
+Content-Type: application/json
 
 {
-  "UserName": "qwe",
-  "Password": "qwe"
+  "username": "qwe",
+  "password": "123"
 }
 
-### Salvar token
-@token = {{loginAutenticado.response.body.$.token}}
+###
+@token = {{loginAutenticado.response.body.token}}
