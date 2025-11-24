@@ -1,15 +1,76 @@
 {% extends "templates/base.html" %}
 
-{% block conteudo %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2>{{ tituloPagina }}</h2>
-</div>
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-md-block sidebar">
+            <div class="position-sticky pt-3">
+                <div class="text-center mb-4">
+                    <i class="bi bi-book-half text-white" style="font-size: 3rem;"></i>
+                    <h5 class="text-white mt-2">Biblioteca</h5>
+                    {% if userName %}
+                    <small class="text-white-50">{{ userName }}</small>
+                    {% endif %}
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/livros">
+                            <i class="bi bi-book"></i> Livros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/autores">
+                            <i class="bi bi-person"></i> Autores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/livroautor">
+                            <i class="bi bi-link-45deg"></i> Livro-Autor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/emprestimos">
+                            <i class="bi bi-calendar-check"></i> Empréstimos
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link" href="/logout">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<div>
-  {% block conteudoPagina %}{% endblock %}
-</div>
-{% endblock %}
+        <!-- Main content -->
+        <main class="col-md-10 ms-sm-auto main-content">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-custom">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h1">
+                        {% if title %}{{ title }}{% else %}Sistema de Biblioteca{% endif %}
+                    </span>
+                    <div class="d-flex">
+                        <span class="navbar-text">
+                            <i class="bi bi-person-circle"></i> 
+                            {% if userName %}{{ userName }}{% else %}Usuário{% endif %}
+                        </span>
+                    </div>
+                </div>
+            </nav>
 
-{% block scripts %}
-{% block scriptsPagina %}{% endblock %}
+            <!-- Page content -->
+            <div class="p-4">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</div>
 {% endblock %}

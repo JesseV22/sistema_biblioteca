@@ -1,75 +1,88 @@
-# dw3frontend
+# Frontend - Sistema de Biblioteca DW3
 
-## Project Overview
-The `dw3frontend` project is a web application designed to provide a user-friendly interface for managing authors and user authentication. It utilizes Nunjucks as the templating engine and follows a modular structure for better maintainability.
+Frontend desenvolvido com Express e Nunjucks para gerenciamento de biblioteca, conectado ao backend com PostgreSQL.
 
-## Project Structure
-```
-dw3frontend
-├── apps
-│   ├── autores
-│   │   ├── controller
-│   │   │   └── ctlAutores.js
-│   │   ├── validate
-│   │   │   └── vldAutores.js
-│   │   └── view
-│   │       ├── vwManutAutores.njk
-│   │       ├── vwFCrAutores.njk
-│   │       └── vwFRUDrAutores.njk
-│   ├── home
-│   │   └── view
-│   │       └── index.njk
-│   ├── login
-│   │   ├── controller
-│   │   │   └── ctlLogin.js
-│   │   ├── validate
-│   │   │   └── vldLogin.js
-│   │   └── view
-│   │       ├── vwLogin.js
-│   │       └── vwLogin.njk
-│   └── templates
-│       ├── base.html
-│       ├── menuLeft.html
-│       ├── footer.html
-│       └── pageModel.njk
-├── routes
-│   ├── rtIndex.js
-│   ├── rtLogin.js
-│   └── rtAutores.js
-├── package.json
-├── srvDW3Front.js
-├── srvDW3Front.env
-└── README.md
+## 📋 Pré-requisitos
+
+- Node.js (versão 14 ou superior)
+- Backend DW3 rodando na porta 40000
+- PostgreSQL configurado
+
+## 🚀 Instalação
+
+1. Instalar dependências:
+```bash
+npm install
 ```
 
-## Installation
-To get started with the `dw3frontend` project, follow these steps:
+2. Configurar variáveis de ambiente:
+   - Edite o arquivo `.env` se necessário
+   - Por padrão:
+     - Frontend: porta 3000
+     - Backend: http://localhost:40000
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
+## ▶️ Executar o Projeto
 
-2. Navigate to the project directory:
-   ```
-   cd dw3frontend
-   ```
-
-3. Install the dependencies:
-   ```
-   npm install
-   ```
-
-## Usage
-To run the application, use the following command:
-```
-node srvDW3Front.js
+### Modo desenvolvimento (com nodemon):
+```bash
+npm run dev
 ```
 
-Make sure to configure your environment variables in the `srvDW3Front.env` file before starting the server.
+### Modo produção:
+```bash
+npm start
+```
 
-## Contributing
-Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
+## 🌐 Acessar o Sistema
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+Abra o navegador em: http://localhost:3000
+
+## 👤 Login
+
+Use as credenciais cadastradas no banco de dados PostgreSQL.
+
+## 📁 Estrutura do Projeto
+
+```
+dw3frontend/
+├── apps/
+│   ├── login/          # Autenticação
+│   ├── home/           # Página inicial
+│   ├── livros/         # CRUD de Livros
+│   ├── autores/        # CRUD de Autores
+│   ├── livroautor/     # Relação N:M Livro-Autor
+│   ├── emprestimos/    # CRUD de Empréstimos
+│   └── templates/      # Templates base
+├── routes/             # Rotas do Express
+├── static/             # Arquivos estáticos
+├── .env                # Variáveis de ambiente
+├── package.json        # Dependências
+└── srvDW3Front.js      # Servidor principal
+```
+
+## 🔧 Funcionalidades
+
+- ✅ Sistema de Login com JWT
+- ✅ CRUD completo de Livros
+- ✅ CRUD completo de Autores
+- ✅ Gerenciamento de relação Livro-Autor (N:M)
+- ✅ CRUD de Empréstimos (1:N)
+- ✅ Interface responsiva com Bootstrap 5
+- ✅ Sessões gerenciadas com express-session
+- ✅ Templates Nunjucks
+
+## 🛠️ Tecnologias Utilizadas
+
+- Express.js
+- Nunjucks (template engine)
+- Bootstrap 5
+- Bootstrap Icons
+- Axios (requisições HTTP)
+- express-session
+- Moment.js (formatação de datas)
+
+## 📝 Observações
+
+- Certifique-se de que o backend está rodando antes de iniciar o frontend
+- O token JWT expira em 2 horas (configurado no backend)
+- A sessão do frontend expira em 1 hora

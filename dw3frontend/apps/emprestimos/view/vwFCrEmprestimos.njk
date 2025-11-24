@@ -1,0 +1,109 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-circle"></i> {{ title }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form id="formEmprestimo">
+                        <div class="mb-3">
+                            <label for="livroid" class="form-label">Livro *</label>
+                            <select class="form-select" id="livroid" name="livroid" required>
+                                <option value="">Selecione um livro</option>
+                                {% for livro in livros %}
+                                <option value="{{ livro.livroid }}">{{ livro.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nomecliente" class="form-label">Nome do Cliente *</label>
+                            <input type="text" class="form-control" id="nomecliente" name="nomecliente" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="dataemprestimo" class="form-label">Data Empréstimo *</label>
+                                    <input type="date" class="form-control" id="dataemprestimo" name="dataemprestimo" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="datadevolucao" class="form-label">Data Devolução *</label>
+                                    <input type="date" class="form-control" id="datadevolucao" name="datadevolucao" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="alertMsg" class="alert d-none" role="alert"></div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/emprestimos" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Voltar
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-save"></i> Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('formEmprestimo').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        livroid: parseInt(document.getElementById('livroid').value),
+        nomecliente: document.getElementById('nomecliente').value,
+        dataemprestimo: document.getElementById('dataemprestimo').value,
+        datadevolucao: document.getElementById('datadevolucao').value,
+        removido: false
+    };
+    
+    const alertMsg = document.getElementById('alertMsg');
+    
+    try {
+        const response = await fetch('/emprestimos/insert', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        // Aceitar tanto 'ok' quanto 'success' como sucesso
+        if (data.status === 'ok' || data.status === 'success' || response.ok) {
+            alertMsg.className = 'alert alert-success';
+            alertMsg.textContent = 'Empréstimo cadastrado com sucesso';
+            alertMsg.classList.remove('d-none');
+            
+            // Redirecionar imediatamente
+            setTimeout(() => {
+                window.location.href = '/emprestimos';
+            }, 800);
+        } else {
+            alertMsg.className = 'alert alert-danger';
+            alertMsg.textContent = 'Erro: ' + (data.msg || 'Erro ao cadastrar');
+            alertMsg.classList.remove('d-none');
+        }
+    } catch (error) {
+        alertMsg.className = 'alert alert-danger';
+        alertMsg.textContent = 'Erro ao cadastrar empréstimo';
+        alertMsg.classList.remove('d-none');
+    }
+});
+</script>
+{% endblock %}

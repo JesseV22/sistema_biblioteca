@@ -1,6 +1,41 @@
 {% extends "templates/base.html" %}
 
-{% block conteudo %}
-  <h1 class="mt-3">Sistema de Biblioteca</h1>
-  <p>Use o menu à esquerda para acessar as funcionalidades.</p>
+{% block content %}
+
+  
+  <ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item active">{{title}}</li>
+  </ol>
+  <div class="row">
+    <div class="col-xl-12">
+
+      <div class="card-header">
+        Início
+      </div>
+
+      <div class="card-body">
+        <div class="col-xl-5">
+
+          <div>
+            <p>Home</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<script>
+  window.onload = function () {
+    windowOnLoad();
+
+  };
+
+</script>
+
+
 {% endblock %}

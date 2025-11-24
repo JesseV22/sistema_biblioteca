@@ -1,162 +1,98 @@
 {% extends "templates/pageModel.njk" %}
 
-{% block conteudoPagina %}
-<div class="row">
-  <div class="col-12">
-    <form id="formAutor">
-      <input type="hidden" id="autorid" value="{{ autorid }}">
-      <table class="table">
-        <tr>
-          <td>ID</td>
-          <td>
-            <input type="text" id="autoridView" class="form-control" disabled>
-          </td>
-        </tr>
-        <tr>
-          <td>Nome</td>
-          <td>
-            <input type="text" id="nome" name="nome" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <td>Nacionalidade</td>
-          <td>
-            <input type="text" id="nacionalidade" name="nacionalidade" class="form-control">
-          </td>
-        </tr>
-      </table>
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header {% if disabled %}bg-info{% else %}bg-warning{% endif %} text-white">
+                    <h4 class="mb-0">
+                        {% if disabled %}
+                        <i class="bi bi-eye"></i> {{ title }}
+                        {% else %}
+                        <i class="bi bi-pencil"></i> {{ title }}
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form id="formAutor">
+                        <input type="hidden" id="autorid" name="autorid" value="{{ data.autorid }}">
+                        
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome *</label>
+                            <input type="text" class="form-control" id="nome" name="nome" 
+                                   value="{{ data.nome }}" {% if disabled %}disabled{% endif %} required>
+                        </div>
 
-      <button type="button" class="btn btn-success" onclick="atualizarAutor()">Salvar</button>
-      <button type="button" class="btn btn-danger" onclick="excluirAutor()">Excluir</button>
-      <a href="/Autores/ManutAutores" class="btn btn-secondary">Voltar</a>
+                        <div class="mb-3">
+                            <label for="nacionalidade" class="form-label">Nacionalidade *</label>
+                            <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" 
+                                   value="{{ data.nacionalidade }}" {% if disabled %}disabled{% endif %} required>
+                        </div>
 
-      <div id="msg" class="mt-3 text-danger"></div>
-    </form>
-  </div>
+                        <div id="alertMsg" class="alert d-none" role="alert"></div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/autores" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Voltar
+                            </a>
+                            {% if not disabled %}
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-save"></i> Atualizar
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %}
 
-{% block scriptsPagina %}
+{% if not disabled %}
 <script>
-  const backendUrl = "http://localhost:40000";
-
-  function obterAutorID() {
-    const hiddenId = document.getElementById("autorid").value;
-    if (hiddenId && hiddenId !== "0") {
-      return hiddenId;
-    }
-    const params = new URLSearchParams(window.location.search);
-    return params.get("autorid") || 0;
-  }
-
-  async function carregarAutor() {
-    const id = obterAutorID();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/Login";
-      return;
-    }
-
-    document.getElementById("autorid").value = id;
-
-    const resposta = await fetch(backendUrl + "/getAutorByID", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-      body: JSON.stringify({ autorid: parseInt(id) })
-    });
-
-    const dados = await resposta.json();
-
-    if (dados.status === "ok" && dados.registro && dados.registro.length > 0) {
-      const autor = dados.registro[0];
-      document.getElementById("autoridView").value = autor.autorid;
-      document.getElementById("nome").value = autor.nome;
-      document.getElementById("nacionalidade").value = autor.nacionalidade || "";
-    }
-  }
-
-  async function atualizarAutor() {
-    const id = document.getElementById("autorid").value;
-    const nome = document.getElementById("nome").value;
-    const nacionalidade = document.getElementById("nacionalidade").value;
-    const msg = document.getElementById("msg");
-
-    msg.innerText = "";
-
-    if (!nome) {
-      msg.innerText = "Informe o nome.";
-      return;
-    }
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/Login";
-      return;
-    }
-
-    const resposta = await fetch(backendUrl + "/updateAutores", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-      body: JSON.stringify({
-        autorid: parseInt(id),
-        nome: nome,
-        nacionalidade: nacionalidade,
+document.getElementById('formAutor').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        autorid: parseInt(document.getElementById('autorid').value),
+        nome: document.getElementById('nome').value,
+        nacionalidade: document.getElementById('nacionalidade').value,
         removido: false
-      })
-    });
-
-    const dados = await resposta.json();
-
-    if (dados.status === "ok") {
-      window.location.href = "/Autores/ManutAutores";
-    } else {
-      msg.innerText = dados.status || "Erro ao atualizar.";
+    };
+    
+    const alertMsg = document.getElementById('alertMsg');
+    
+    try {
+        const response = await fetch('/autores/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'ok') {
+            alertMsg.className = 'alert alert-success';
+            alertMsg.textContent = 'Autor atualizado com sucesso!';
+            alertMsg.classList.remove('d-none');
+            
+            setTimeout(() => {
+                window.location.href = '/autores';
+            }, 1500);
+        } else {
+            alertMsg.className = 'alert alert-danger';
+            alertMsg.textContent = 'Erro: ' + data.msg;
+            alertMsg.classList.remove('d-none');
+        }
+    } catch (error) {
+        alertMsg.className = 'alert alert-danger';
+        alertMsg.textContent = 'Erro ao atualizar autor';
+        alertMsg.classList.remove('d-none');
     }
-  }
-
-  async function excluirAutor() {
-    const id = document.getElementById("autorid").value;
-    const msg = document.getElementById("msg");
-
-    msg.innerText = "";
-
-    if (!id) {
-      msg.innerText = "ID inválido.";
-      return;
-    }
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/Login";
-      return;
-    }
-
-    const resposta = await fetch(backendUrl + "/DeleteAutores", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-      body: JSON.stringify({
-        autorid: parseInt(id)
-      })
-    });
-
-    const dados = await resposta.json();
-
-    if (dados.status === "ok") {
-      window.location.href = "/Autores/ManutAutores";
-    } else {
-      msg.innerText = dados.status || "Erro ao excluir.";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", carregarAutor);
+});
 </script>
+{% endif %}
 {% endblock %}

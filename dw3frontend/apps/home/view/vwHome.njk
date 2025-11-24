@@ -1,0 +1,72 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron bg-light p-5 rounded">
+                <h1 class="display-4">
+                    <i class="bi bi-book-half"></i> Sistema de Biblioteca
+                </h1>
+                <p class="lead">Bem-vindo ao sistema de gerenciamento de biblioteca</p>
+                <hr class="my-4">
+                <p>Utilize o menu lateral para navegar entre as funcionalidades do sistema.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">
+                    <i class="bi bi-book"></i> Livros
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Livros</h5>
+                    <p class="card-text">Cadastre e gerencie o acervo de livros</p>
+                    <a href="/livros" class="btn btn-light">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">
+                    <i class="bi bi-person"></i> Autores
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Autores</h5>
+                    <p class="card-text">Cadastre e gerencie autores</p>
+                    <a href="/autores" class="btn btn-light">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                    <i class="bi bi-link-45deg"></i> Livro-Autor
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Relacionar Livros e Autores</h5>
+                    <p class="card-text">Gerencie a relação entre livros e autores</p>
+                    <a href="/livroautor" class="btn btn-light">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">
+                    <i class="bi bi-calendar-check"></i> Empréstimos
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Empréstimos</h5>
+                    <p class="card-text">Controle empréstimos de livros</p>
+                    <a href="/emprestimos" class="btn btn-light">Acessar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

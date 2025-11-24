@@ -1,0 +1,100 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-calendar-check"></i> {{ title }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if erro %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> {{ erro }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <a href="/emprestimos/insert" class="btn btn-warning">
+                            <i class="bi bi-plus-circle"></i> Novo Empréstimo
+                        </a>
+                    </div>
+
+                    {% if data and data.length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Livro ID</th>
+                                    <th>Nome Cliente</th>
+                                    <th>Data Empréstimo</th>
+                                    <th>Data Devolução</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for emp in data %}
+                                <tr>
+                                    <td>{{ emp.emprestimoid }}</td>
+                                    <td>{{ emp.livroid }}</td>
+                                    <td>{{ emp.nomecliente }}</td>
+                                    <td>{{ emp.dataemprestimo | date('DD/MM/YYYY') }}</td>
+                                    <td>{{ emp.datadevolucao | date('DD/MM/YYYY') }}</td>
+                                    <td class="text-center">
+                                        <a href="/emprestimos/update/{{ emp.emprestimoid }}" class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button onclick="deleteEmprestimo({{ emp.emprestimoid }})" class="btn btn-sm btn-danger" title="Excluir">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Nenhum empréstimo cadastrado.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function deleteEmprestimo(id) {
+    if (!confirm('Deseja realmente excluir este empréstimo?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/emprestimos/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ emprestimoid: id })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            alert('Empréstimo excluído com sucesso!');
+            window.location.reload();
+        } else {
+            alert('Erro ao excluir empréstimo: ' + data.msg);
+        }
+    } catch (error) {
+        alert('Erro ao excluir empréstimo');
+    }
+}
+</script>
+{% endblock %}

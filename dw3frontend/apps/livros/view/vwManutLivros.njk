@@ -1,0 +1,103 @@
+{% extends "templates/pageModel.njk" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-book"></i> {{ title }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if erro %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> {{ erro }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <a href="/livros/insert" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Novo Livro
+                        </a>
+                    </div>
+
+                    {% if data and data.length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Quantidade</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for livro in data %}
+                                <tr>
+                                    <td>{{ livro.livroid }}</td>
+                                    <td>{{ livro.titulo }}</td>
+                                    <td>{{ livro.categoria }}</td>
+                                    <td>R$ {{ livro.preco }}</td>
+                                    <td>{{ livro.quantidade }}</td>
+                                    <td class="text-center">
+                                        <a href="/livros/view/{{ livro.livroid }}" class="btn btn-sm btn-info" title="Visualizar">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/livros/update/{{ livro.livroid }}" class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button onclick="deleteLivro({{ livro.livroid }})" class="btn btn-sm btn-danger" title="Excluir">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Nenhum livro cadastrado.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function deleteLivro(id) {
+    if (!confirm('Deseja realmente excluir este livro?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/livros/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ livroid: id })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            alert('Livro excluído com sucesso!');
+            window.location.reload();
+        } else {
+            alert('Erro ao excluir livro: ' + data.msg);
+        }
+    } catch (error) {
+        alert('Erro ao excluir livro');
+    }
+}
+</script>
+{% endblock %}

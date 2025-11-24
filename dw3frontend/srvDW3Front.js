@@ -1,36 +1,83 @@
-const express = require("express");
-const path = require("path");
-const nunjucks = require("nunjucks");
-require("dotenv").config({ path: "srvDW3Front.env" });
+// Servidor Frontend - DW3
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+const session = require('express-session');
 
-const rtIndex = require("./routes/rtIndex");
-const rtLogin = require("./routes/rtLogin");
-const rtAutores = require("./routes/rtAutores");
-const rtLivros = require("./routes/rtLivros");
-const rtLivroAutor = require("./routes/rtLivroAutor");
-const rtEmprestimos = require("./routes/rtEmprestimos");
+// Carregar variáveis de ambiente
+require('dotenv').config({ path: '.env' });
 
-const app = express();
-const port = process.env.FRONT_PORT || 30000;
+const port = process.env.PORT || 3000;
+var rtIndex = require('./routes/rtIndex');
+var rtLivros = require('./routes/rtLivros');
+var rtAutores = require('./routes/rtAutores');
+var rtLivroAutor = require('./routes/rtLivroAutor');
+var rtEmprestimos = require('./routes/rtEmprestimos');
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use("/public", express.static(path.join(__dirname, "public")));
+var app = express();
 
-nunjucks.configure("apps", {
+// Configuração do Nunjucks
+var nunjucks = require("nunjucks");
+const moment = require("moment");
+
+var env = nunjucks.configure('apps', {
   autoescape: true,
   express: app,
+  watch: true
 });
 
-app.set("view engine", "njk");
+// Adicionar filtro de formatação de data
+env.addFilter('date', function(date, format) {
+  if (!date) return '';
+  return moment(date).format(format || 'DD/MM/YYYY');
+});
 
-app.use("/", rtIndex);
-app.use("/", rtLogin);
-app.use("/", rtAutores);
-app.use("/", rtLivros);
-app.use("/", rtLivroAutor);
-app.use("/", rtEmprestimos);
+// Middleware
+app.use(express.static(path.resolve(__dirname, 'static')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
+// Configuração de sessão
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 3600000, // 1 hora
+    httpOnly: true
+  }
+}));
+
+// Rotas
+app.use('/', rtIndex);
+app.use('/livros', rtLivros);
+app.use('/autores', rtAutores);
+app.use('/livroautor', rtLivroAutor);
+app.use('/emprestimos', rtEmprestimos);
+
+// Tratamento de erro 404
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// Tratamento de erros
+app.use(function(err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.render('templates/error.njk', { 
+    title: 'Erro',
+    error: err 
+  });
+});
+
+// Iniciar servidor
 app.listen(port, () => {
-  console.log("Frontend rodando na porta " + port);
+  console.log(`🚀 Servidor Frontend rodando na porta ${port}`);
+  console.log(`📡 Backend configurado em: ${process.env.SERVIDOR_DW3Back}`);
+  console.log(`🌐 Acesse: http://localhost:${port}`);
 });
+
+module.exports = app;
