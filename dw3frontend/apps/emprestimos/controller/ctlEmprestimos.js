@@ -1,7 +1,6 @@
 const axios = require("axios");
 const moment = require("moment");
 
-// Listar todos os empréstimos
 const getAllEmprestimos = async (req, res) => {
   const userName = req.session.userName;
   const token = req.session.token;
@@ -38,12 +37,10 @@ const getAllEmprestimos = async (req, res) => {
   }
 };
 
-// Abrir formulário de inserção
 const openInsertEmprestimo = async (req, res) => {
   const token = req.session.token;
 
   try {
-    // Buscar livros disponíveis
     const livros = await axios.get(
       process.env.SERVIDOR_DW3Back + "/getAllLivros",
       {
@@ -66,7 +63,6 @@ const openInsertEmprestimo = async (req, res) => {
   }
 };
 
-// Inserir novo empréstimo
 const insertEmprestimo = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -99,7 +95,6 @@ const insertEmprestimo = async (req, res) => {
   }
 };
 
-// Abrir formulário de edição
 const openUpdateEmprestimo = async (req, res) => {
   const id = req.params.id;
   const token = req.session.token;
@@ -127,7 +122,6 @@ const openUpdateEmprestimo = async (req, res) => {
     );
 
     if (response.data.status === "ok" && response.data.registro.length > 0) {
-      // Formatar datas
       const emprestimo = response.data.registro[0];
       emprestimo.dataemprestimo = moment(emprestimo.dataemprestimo).format("YYYY-MM-DD");
       emprestimo.datadevolucao = moment(emprestimo.datadevolucao).format("YYYY-MM-DD");
@@ -181,7 +175,6 @@ const updateEmprestimo = async (req, res) => {
   }
 };
 
-// Deletar empréstimo
 const deleteEmprestimo = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;

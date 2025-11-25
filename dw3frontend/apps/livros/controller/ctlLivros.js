@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// Listar todos os livros
 const getAllLivros = async (req, res) => {
   const userName = req.session.userName;
   const token = req.session.token;
@@ -39,7 +38,6 @@ const getAllLivros = async (req, res) => {
   }
 };
 
-// Abrir formulário de inserção
 const openInsertLivro = (req, res) => {
   res.render("livros/view/vwFCrLivros.njk", {
     title: "Cadastro de Livro",
@@ -49,7 +47,6 @@ const openInsertLivro = (req, res) => {
   });
 };
 
-// Inserir novo livro
 const insertLivro = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -82,7 +79,6 @@ const insertLivro = async (req, res) => {
   }
 };
 
-// Abrir formulário de edição
 const openUpdateLivro = async (req, res) => {
   const id = req.params.id;
   const token = req.session.token;
@@ -115,7 +111,6 @@ const openUpdateLivro = async (req, res) => {
   }
 };
 
-// Atualizar livro
 const updateLivro = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -148,7 +143,6 @@ const updateLivro = async (req, res) => {
   }
 };
 
-// Visualizar livro
 const viewLivro = async (req, res) => {
   const id = req.params.id;
   const token = req.session.token;
@@ -181,7 +175,6 @@ const viewLivro = async (req, res) => {
   }
 };
 
-// Deletar livro
 const deleteLivro = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;

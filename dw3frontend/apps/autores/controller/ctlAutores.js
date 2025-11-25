@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// Listar todos os autores
 const getAllAutores = async (req, res) => {
   const userName = req.session.userName;
   const token = req.session.token;
@@ -39,7 +38,6 @@ const getAllAutores = async (req, res) => {
   }
 };
 
-// Abrir formulário de inserção
 const openInsertAutor = (req, res) => {
   res.render("autores/view/vwFCrAutores.njk", {
     title: "Cadastro de Autor",
@@ -49,7 +47,6 @@ const openInsertAutor = (req, res) => {
   });
 };
 
-// Inserir novo autor
 const insertAutor = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -82,7 +79,6 @@ const insertAutor = async (req, res) => {
   }
 };
 
-// Abrir formulário de edição
 const openUpdateAutor = async (req, res) => {
   const id = req.params.id;
   const token = req.session.token;
@@ -115,7 +111,6 @@ const openUpdateAutor = async (req, res) => {
   }
 };
 
-// Atualizar autor
 const updateAutor = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -148,7 +143,6 @@ const updateAutor = async (req, res) => {
   }
 };
 
-// Visualizar autor
 const viewAutor = async (req, res) => {
   const id = req.params.id;
   const token = req.session.token;
@@ -181,7 +175,6 @@ const viewAutor = async (req, res) => {
   }
 };
 
-// Deletar autor
 const deleteAutor = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;

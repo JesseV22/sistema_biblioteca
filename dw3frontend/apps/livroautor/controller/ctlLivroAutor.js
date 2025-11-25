@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// Listar todas as relações livro-autor
 const getAllLivroAutor = async (req, res) => {
   const userName = req.session.userName;
   const token = req.session.token;
@@ -37,12 +36,10 @@ const getAllLivroAutor = async (req, res) => {
   }
 };
 
-// Abrir formulário de inserção
 const openInsertLivroAutor = async (req, res) => {
   const token = req.session.token;
 
   try {
-    // Buscar livros e autores disponíveis
     const livros = await axios.get(
       process.env.SERVIDOR_DW3Back + "/getAllLivros",
       {
@@ -76,7 +73,6 @@ const openInsertLivroAutor = async (req, res) => {
   }
 };
 
-// Inserir nova relação
 const insertLivroAutor = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
@@ -109,7 +105,6 @@ const insertLivroAutor = async (req, res) => {
   }
 };
 
-// Deletar relação
 const deleteLivroAutor = async (req, res) => {
   const regData = req.body;
   const token = req.session.token;
