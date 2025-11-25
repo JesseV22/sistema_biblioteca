@@ -5,9 +5,7 @@ const GetCredencial = async (loginPar) => {
     await db.query(
       "SELECT username, password FROM usuarios WHERE username = $1 AND removido = false",
       [loginPar.UserName]
-
     )
   ).rows;
 };
-
 module.exports = { GetCredencial };

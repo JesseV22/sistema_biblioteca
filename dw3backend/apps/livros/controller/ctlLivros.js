@@ -1,6 +1,5 @@
 const mdlLivros = require("../model/mdlLivros");
 
-// GET ALL
 const getAllLivros = (req, res) => {
   (async () => {
     let registro = await mdlLivros.getAllLivros();
@@ -8,7 +7,6 @@ const getAllLivros = (req, res) => {
   })();
 };
 
-// GET BY ID
 const getLivroByID = (req, res) => {
   (async () => {
     const id = parseInt(req.body.livroid);
@@ -17,7 +15,6 @@ const getLivroByID = (req, res) => {
   })();
 };
 
-// INSERT
 const insertLivros = (req, res) => {
   (async () => {
     const livroREG = req.body;
@@ -26,7 +23,6 @@ const insertLivros = (req, res) => {
   })();
 };
 
-// UPDATE
 const updateLivros = (req, res) => {
   (async () => {
     const livroREG = req.body;
@@ -35,7 +31,6 @@ const updateLivros = (req, res) => {
   })();
 };
 
-// DELETE
 const deleteLivros = (req, res) => {
   (async () => {
     const livroREG = req.body;

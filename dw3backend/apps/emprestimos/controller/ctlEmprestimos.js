@@ -1,5 +1,6 @@
 const mdlEmprestimos = require("../model/mdlEmprestimos");
 
+// GET ALL
 const getAllEmprestimos = (req, res) => {
   (async () => {
     let registro = await mdlEmprestimos.getAllEmprestimos();
@@ -7,6 +8,7 @@ const getAllEmprestimos = (req, res) => {
   })();
 };
 
+// GET BY ID
 const getEmprestimoByID = (req, res) => {
   (async () => {
     const id = parseInt(req.body.emprestimoid);
@@ -15,6 +17,7 @@ const getEmprestimoByID = (req, res) => {
   })();
 };
 
+// INSERT
 const insertEmprestimos = (req, res) => {
   (async () => {
     const reg = req.body;
@@ -23,6 +26,7 @@ const insertEmprestimos = (req, res) => {
   })();
 };
 
+// UPDATE
 const updateEmprestimos = (req, res) => {
   (async () => {
     const reg = req.body;
@@ -31,7 +35,7 @@ const updateEmprestimos = (req, res) => {
   })();
 };
 
-
+// DELETE (soft)
 const DeleteEmprestimos = (req, res) => {
   (async () => {
     const reg = req.body;

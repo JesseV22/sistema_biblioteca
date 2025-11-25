@@ -1,14 +1,15 @@
 const db = require("../../../database/databaseconfig");
 
+// Todos os empréstimos não removidos
 const getAllEmprestimos = async () => {
   return (
     await db.query(
-      "SELECT * FROM emprestimos WHERE removido = false ORDER BY data_emprestimo DESC"
+      "SELECT * FROM emprestimos WHERE removido = false ORDER BY dataemprestimo DESC"
     )
   ).rows;
 };
 
-
+// Empréstimo por ID
 const getEmprestimoByID = async (emprestimoIDPar) => {
   return (
     await db.query(
@@ -18,7 +19,7 @@ const getEmprestimoByID = async (emprestimoIDPar) => {
   ).rows;
 };
 
-
+// Inserir empréstimo
 const insertEmprestimos = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -27,15 +28,13 @@ const insertEmprestimos = async (registroPar) => {
     linhasAfetadas = (
       await db.query(
         "INSERT INTO emprestimos " +
-          "(livroid, leitor, data_emprestimo, data_prevista, data_devolucao, valor_multa, removido) " +
-          "VALUES ($1, $2, $3, $4, $5, $6, $7)",
+          "(livroid, nomecliente, dataemprestimo, datadevolucao, removido) " +
+          "VALUES ($1, $2, $3, $4, $5)",
         [
           registroPar.livroid,
-          registroPar.leitor,
-          registroPar.data_emprestimo,
-          registroPar.data_prevista,
-          registroPar.data_devolucao,
-          registroPar.valor_multa,
+          registroPar.nomecliente,
+          registroPar.dataemprestimo,
+          registroPar.datadevolucao,
           registroPar.removido,
         ]
       )
@@ -48,7 +47,7 @@ const insertEmprestimos = async (registroPar) => {
   return { msg, linhasAfetadas };
 };
 
-
+// Atualizar empréstimo
 const UpdateEmprestimos = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -58,21 +57,17 @@ const UpdateEmprestimos = async (registroPar) => {
       await db.query(
         "UPDATE emprestimos SET " +
           "livroid = $2, " +
-          "leitor = $3, " +
-          "data_emprestimo = $4, " +
-          "data_prevista = $5, " +
-          "data_devolucao = $6, " +
-          "valor_multa = $7, " +
-          "removido = $8 " +
+          "nomecliente = $3, " +
+          "dataemprestimo = $4, " +
+          "datadevolucao = $5, " +
+          "removido = $6 " +
           "WHERE emprestimoid = $1",
         [
           registroPar.emprestimoid,
           registroPar.livroid,
-          registroPar.leitor,
-          registroPar.data_emprestimo,
-          registroPar.data_prevista,
-          registroPar.data_devolucao,
-          registroPar.valor_multa,
+          registroPar.nomecliente,
+          registroPar.dataemprestimo,
+          registroPar.datadevolucao,
           registroPar.removido,
         ]
       )

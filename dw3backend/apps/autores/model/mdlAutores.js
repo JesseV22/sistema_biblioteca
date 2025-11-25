@@ -1,5 +1,6 @@
 const db = require("../../../database/databaseconfig");
 
+// Retorna todos os autores não removidos
 const getAllAutores = async () => {
   return (
     await db.query(
@@ -8,6 +9,7 @@ const getAllAutores = async () => {
   ).rows;
 };
 
+// Retorna um autor pelo ID
 const getAutorByID = async (autorIDPar) => {
   return (
     await db.query(
@@ -17,6 +19,7 @@ const getAutorByID = async (autorIDPar) => {
   ).rows;
 };
 
+// Insere um novo autor
 const insertAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
@@ -37,7 +40,7 @@ const insertAutores = async (autorREGPar) => {
 };
 
 // Atualiza um autor
-const UpdateAutores = async (autorREGPar) => {
+const updateAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 
@@ -62,7 +65,7 @@ const UpdateAutores = async (autorREGPar) => {
 };
 
 // Soft delete (removido = true)
-const DeleteAutores = async (autorREGPar) => {
+const deleteAutores = async (autorREGPar) => {
   let linhasAfetadas;
   let msg = "ok";
 

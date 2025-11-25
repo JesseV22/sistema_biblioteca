@@ -1,5 +1,6 @@
 const mdlAutores = require("../model/mdlAutores");
 
+// GET ALL
 const getAllAutores = (req, res) => {
   (async () => {
     let registro = await mdlAutores.getAllAutores();
@@ -7,6 +8,7 @@ const getAllAutores = (req, res) => {
   })();
 };
 
+// GET BY ID
 const getAutorByID = (req, res) => {
   (async () => {
     const id = parseInt(req.body.autorid);
@@ -15,6 +17,7 @@ const getAutorByID = (req, res) => {
   })();
 };
 
+// INSERT
 const insertAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
@@ -23,6 +26,7 @@ const insertAutores = (req, res) => {
   })();
 };
 
+// UPDATE
 const updateAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
@@ -31,8 +35,8 @@ const updateAutores = (req, res) => {
   })();
 };
 
-// DELETE (soft)
-const DeleteAutores = (req, res) => {
+// DELETE
+const deleteAutores = (req, res) => {
   (async () => {
     const autorREG = req.body;
     let { msg, linhasAfetadas } = await mdlAutores.deleteAutores(autorREG);

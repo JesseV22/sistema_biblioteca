@@ -1,6 +1,4 @@
-
 const db = require("../../../database/databaseconfig");
-
 
 const getAllLivroAutor = async () => {
   return (
@@ -10,7 +8,6 @@ const getAllLivroAutor = async () => {
   ).rows;
 };
 
-
 const getLivroAutorByID = async (livroAutorIDPar) => {
   return (
     await db.query(
@@ -19,7 +16,6 @@ const getLivroAutorByID = async (livroAutorIDPar) => {
     )
   ).rows;
 };
-
 
 const insertLivroAutor = async (registroPar) => {
   let linhasAfetadas;
@@ -41,7 +37,6 @@ const insertLivroAutor = async (registroPar) => {
 
   return { msg, linhasAfetadas };
 };
-
 
 const UpdateLivroAutor = async (registroPar) => {
   let linhasAfetadas;
@@ -71,7 +66,6 @@ const UpdateLivroAutor = async (registroPar) => {
   return { msg, linhasAfetadas };
 };
 
-// Soft delete
 const DeleteLivroAutor = async (registroPar) => {
   let linhasAfetadas;
   let msg = "ok";
